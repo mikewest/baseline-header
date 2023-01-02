@@ -60,6 +60,54 @@ technology that developers might not want to opt-into in lockstep. It seems
 reasonable to me to support some extension in the future without adding new
 headers (e.g. `Baseline: Security=2024, Layout=2022`).
 
-### This is still developer opt-in. Could we use something like this to pull folks along?
+### `Baseline` only changes defaults. Could we use something like this to facilitate actual deprecations?
 
-_**TODO(mkwst)**: Talk about alternatives, such as John Wilander's "linked-on-or-after" notion, which would tie the year's features to the year's restrictions. That seems bigger and substantially harder to ship, but potentially more impactful._
+[John Wilander][wilander] has [floated][tpac2022] the notion of applying macOS/iOS SDK's
+"[linked on or after][looa]" concept to the web, which is somewhat conceptually similar
+to this document's proposal. My understanding of the proposal is something like the
+following:
+
+*   New APIs would be tied to some versioning scheme, whether time-based like this
+    document's proposal, or versioned in some more esoteric manner akin to operating
+    system versions. `form.requestSubmit()` might be exposed with version 4, while CSS
+    Subgrid might not exist until version 8. 
+
+*   Likewise, behavior deprecations would have a lifetime tied to a version. For example,
+    `document.domain` might stop working at version 5, and synchronous XHR at version 8.
+
+*   Developers would opt-into a particular version in some way, possibly by delivering
+    a response header. This opt-in would both enable exciting new capabilities, _and_
+    trigger the corresponding deprecations. With the examples above, a page that
+    declared itself as being version 6 would have access to `form.requestSubmit()`,
+    but not to `document.domain`.
+
+Unlike the `Baseline` proposal above, this isn't merely about changing the defaults, but
+about moving from deprecation to _removal_. New functionality would pull developers towards
+newer versions, creating incentives to lock themselves out of deprecated behavior, thereby
+providing a clear evolutionary path for the platform.
+
+My feeling is that this idea is worth exploring, but is also substantially more complicated
+than the `Baseline` proposal in this document. Socially, it's complicated to get folks to
+agree that _their_ new thing ought to be tied to unrelated deprecations (see the general
+inapplicability of `SecureContext` restrictions to CSS features, for example). Technically,
+it's complicated to safely carry around multiple versions of behavior for a given API.
+
+I'm also not sure what the end-game is for older versions. Ideally, we'd be able to simply
+stop supporting them, as iOS or macOS can. However, the web's model is quite different,
+and it's somewhat unexpected that a website relying upon deprecated behavior would stop
+working when you upgrade your laptop. Eventual removal seems to have the same long-tail
+challenges that we face with any other deprecation today. That said, this model might
+well make a deprecation's impact a little more clear by giving developers a standardized
+way of testing the implications of moving past any given milestone, and give browser
+vendors more information about the set of sites actually relying on any particular
+behavior, as that reliance will be somewhat more explicitly visible in datastes like
+HTTP Archive or CrUX.
+
+I'd like to start with changes to the platform's defaults, as that seems both tractable
+and concrete. If we can evolve that mechanism into one which also productively ties the
+carrots of new APIs to the sticks of deprecation/removal
+(`Baseline: Security=2024, Platform=2022`?), so much the better.
+
+[wilander]: https://hackerfiction.net/
+[tpac2022]: https://github.com/w3c/webappsec/blob/main/meetings/2022/2022-09-12-TPAC-minutes-1.md#:~:text=JohnW%3A%20I%27ve%20brought%20this%20up%20before%2C%20but%20something%20like%20on%20OS%20linking%3A%20%22on%20or%20after%20XXX%22%2C%20you%20opt%20in%20to%20the%20new%20thing%20but%20can%27t%20use%20the%20old%20thing%20any%20more.
+[looa]: https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl#discussion:~:text=If%20you%20link%20your%20app%20on%20or%20after%20iOS%209.0
