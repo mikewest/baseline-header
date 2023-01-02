@@ -69,8 +69,9 @@ following:
 
 *   New APIs would be tied to some versioning scheme, whether time-based like this
     document's proposal, or versioned in some more esoteric manner akin to operating
-    system versions. `form.requestSubmit()` might be exposed with version 4, while CSS
-    Subgrid might not exist until version 8. 
+    system versions. `form.requestSubmit()` might be exposed with version 4 (I imagine
+    IDL attributes with some spelling of `MinVersion` and `MaxVersion` when possible),
+    while CSS Subgrid might not exist until version 8. 
 
 *   Likewise, behavior deprecations would have a lifetime tied to a version. For example,
     `document.domain` might stop working at version 5, and synchronous XHR at version 8.
@@ -93,9 +94,10 @@ inapplicability of `SecureContext` restrictions to CSS features, for example). T
 it's complicated to safely carry around multiple versions of behavior for a given API.
 
 I'm also not sure what the end-game is for older versions. Ideally, we'd be able to simply
-stop supporting them, as iOS or macOS can. However, the web's model is quite different,
-and it's somewhat unexpected that a website relying upon deprecated behavior would stop
-working when you upgrade your laptop. Eventual removal seems to have the same long-tail
+stop supporting them, as iOS or macOS can. However, the web's model is quite different
+both in terms of single points of control and in terms of developer expectation around
+breakage. It's somewhat unexpected that a website relying upon deprecated behavior would
+stop working when you upgrade your laptop. Eventual removal seems to have the same long-tail
 challenges that we face with any other deprecation today. That said, this model might
 well make a deprecation's impact a little more clear by giving developers a standardized
 way of testing the implications of moving past any given milestone, and give browser
