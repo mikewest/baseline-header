@@ -64,8 +64,9 @@ headers (e.g. `Baseline: Security=2024, Layout=2022`).
 
 [John Wilander][wilander] has [floated][tpac2022] the notion of applying macOS/iOS SDK's
 "[linked on or after][looa]" concept to the web, which is somewhat conceptually similar
-to this document's proposal. My understanding of the proposal is something like the
-following:
+to this document's proposal. There's also Tom van Goethem and Wouter Joosen's
+[`Progressive-Security` header][prog-sec] which seems conceptually in-line with this
+proposal. My understanding of John's proposal is something like the following:
 
 *   New APIs would be tied to some versioning scheme, whether time-based like this
     document's proposal, or versioned in some more esoteric manner akin to operating
@@ -113,3 +114,7 @@ carrots of new APIs to the sticks of deprecation/removal
 [wilander]: https://hackerfiction.net/
 [tpac2022]: https://github.com/w3c/webappsec/blob/main/meetings/2022/2022-09-12-TPAC-minutes-1.md#:~:text=JohnW%3A%20I%27ve%20brought%20this%20up%20before%2C%20but%20something%20like%20on%20OS%20linking%3A%20%22on%20or%20after%20XXX%22%2C%20you%20opt%20in%20to%20the%20new%20thing%20but%20can%27t%20use%20the%20old%20thing%20any%20more.
 [looa]: https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl#discussion:~:text=If%20you%20link%20your%20app%20on%20or%20after%20iOS%209.0
+[prog-sec]: https://secweb.work/presentations/2022/Goethem-deprecation.pdf
+
+
+
